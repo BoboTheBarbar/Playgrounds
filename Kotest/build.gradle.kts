@@ -16,7 +16,7 @@ dependencies {
     // Kotest
     testImplementation("io.kotest:kotest-runner-junit5:$koTestCoreVersion")
     testImplementation("io.kotest:kotest-assertions-core:$koTestCoreVersion")
-    testImplementation("io.kotest:io.kotest:kotest-property:$koTestCoreVersion")
+    testImplementation("io.kotest:kotest-property:$koTestCoreVersion")
 }
 
 tasks.withType<Test>().configureEach {
