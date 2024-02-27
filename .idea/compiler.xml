@@ -5,6 +5,9 @@
       <module name="Coroutines" target="19" />
       <module name="Coroutines.main" target="19" />
       <module name="Coroutines.test" target="19" />
+      <module name="Kotest" target="21" />
+      <module name="Kotest.main" target="21" />
+      <module name="Kotest.test" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

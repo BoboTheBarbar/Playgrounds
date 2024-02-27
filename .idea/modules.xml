@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/Coroutines.iml" filepath="$PROJECT_DIR$/Coroutines.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Coroutines.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Coroutines.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Coroutines.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Coroutines.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Kotest.iml" filepath="$PROJECT_DIR$/Kotest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Kotest.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Kotest.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Kotest.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Kotest.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Playgrounds.iml" filepath="$PROJECT_DIR$/.idea/Playgrounds.iml" />
     </modules>
   </component>
