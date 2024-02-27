@@ -22,6 +22,9 @@ class ExampleTests : BehaviorSpec({
                     then("Nothing happens") {
                         println("How boring...")
                     }
+                    xthen("She should be able to fly") {
+                        println("This should not print")
+                    }
                 }
             }
         }
