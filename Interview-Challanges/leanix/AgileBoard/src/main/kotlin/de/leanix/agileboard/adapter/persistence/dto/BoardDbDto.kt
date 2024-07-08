@@ -8,13 +8,13 @@ import jakarta.persistence.FetchType
 import java.util.UUID
 
 @Entity
-data class BoardH2Dto(
+data class BoardDbDto(
     @Id
     val id: UUID = UUID.randomUUID(),
     val name: String,
     val description: String? = null,
     @OneToMany(mappedBy = "board", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val tasks: List<TaskH2Dto> = emptyList()
+    val tasks: List<TaskDbDto> = emptyList()
 ) {
     constructor() : this(UUID.randomUUID(), "", null, emptyList())
 }

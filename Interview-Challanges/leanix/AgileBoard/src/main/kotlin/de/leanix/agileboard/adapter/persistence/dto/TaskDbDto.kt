@@ -4,21 +4,21 @@ import jakarta.persistence.*
 import java.util.UUID
 
 @Entity
-data class TaskH2Dto(
+data class TaskDbDto(
     @Id
     val id: UUID,
     val name: String,
     val description: String? = null,
     @ManyToOne
     @JoinColumn(name = "board_id")
-    val board: BoardH2Dto,
+    val board: BoardDbDto,
     @Column(name = "user_id") // Renamed column to avoid using reserved keyword
     val user: UUID,
-    val status: Status? = null
+    val status: StatusDbDto? = null
 ) {
-    constructor() : this(UUID.randomUUID(), "", null, BoardH2Dto(), UUID.randomUUID(), null)
+    constructor() : this(UUID.randomUUID(), "", null, BoardDbDto(), UUID.randomUUID(), null)
 
-    enum class Status {
+    enum class StatusDbDto {
         CREATED,
         STARTED,
         COMPLETED

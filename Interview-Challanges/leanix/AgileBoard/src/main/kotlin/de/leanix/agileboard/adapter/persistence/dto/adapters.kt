@@ -2,7 +2,7 @@ package de.leanix.agileboard.adapter.persistence.dto
 
 import Board
 
-fun BoardH2Dto.toBoard(): Board {
+fun BoardDbDto.toBoard(): Board {
     return Board(
         id = id,
         name = name,
@@ -11,7 +11,7 @@ fun BoardH2Dto.toBoard(): Board {
     )
 }
 
-fun TaskH2Dto.toTask(): Board.Task {
+fun TaskDbDto.toTask(): Board.Task {
     return Board.Task(
         id = id,
         name = name,
@@ -21,10 +21,10 @@ fun TaskH2Dto.toTask(): Board.Task {
     )
 }
 
-fun TaskH2Dto.Status.toTaskStatus(): Board.Status {
+fun TaskDbDto.StatusDbDto.toTaskStatus(): Board.Status {
     return when (this) {
-        TaskH2Dto.Status.CREATED -> Board.Status.CREATED
-        TaskH2Dto.Status.STARTED -> Board.Status.STARTED
-        TaskH2Dto.Status.COMPLETED -> Board.Status.COMPLETED
+        TaskDbDto.StatusDbDto.CREATED -> Board.Status.CREATED
+        TaskDbDto.StatusDbDto.STARTED -> Board.Status.STARTED
+        TaskDbDto.StatusDbDto.COMPLETED -> Board.Status.COMPLETED
     }
 }
