@@ -1,3 +1,5 @@
+import net.pwall.json.kotlin.codegen.gradle.JSONSchemaCodegenPlugin
+
 plugins {
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
@@ -35,4 +37,19 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("net.pwall.json:json-kotlin-gradle:0.107")
+    }
+}
+
+apply<JSONSchemaCodegenPlugin>()
+
+sourceSets.main {
+    java.srcDirs("build/generated-sources/kotlin")
 }
