@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://example.com/schemas/board",
+  "type": "object",
+  "title": "Board schema",
+  "required": ["id", "name"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "tasks": {
+      "type": "array",
+      "default": [],
+      "additionalItems": false,
+      "items": { "$ref": "#/$defs/task" }
+    }
+  },
+  "$defs": {
+    "task": {
+      "$id": "/schemas/task",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "title": "Task schema",
+      "required": ["id", "name", "user"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "user": { "type": "string", "format": "uuid" },
+        "status": { "type": "string", "enum": ["CREATED", "STARTED", "COMPLETED"] }
+      }
+    }
+  }
+}
