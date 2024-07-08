@@ -1,18 +1,25 @@
 package de.leanix.agileboard.application
 
 import de.leanix.agileboard.application.persistence.BoardRepository
-import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.mockk.coEvery
 import io.mockk.mockk
 
-class BoardServiceTest : StringSpec({
-    val boardRepository = mockk<BoardRepository>()
-    val boardService = BoardService(boardRepository)
+class BoardServiceTest : BehaviorSpec({
+    Context("getAllBoards Endpoint should return all available boards") {
+        Given("no boards exist") {
+            val boardRepository = mockk<BoardRepository>()
+            val boardService = BoardService(boardRepository)
+            coEvery { boardRepository.findAll() } returns emptyList()
 
-    "getAllBoards should return empty list when no boards exist" {
-        coEvery { boardRepository.findAll() } returns emptyList()
+            When("getAllBoards is called") {
+                val result = boardService.getAllBoards()
 
-        boardService.getAllBoards().shouldBeEmpty()
+                Then("it should return an empty list") {
+                    result.shouldBeEmpty()
+                }
+            }
+        }
     }
 })

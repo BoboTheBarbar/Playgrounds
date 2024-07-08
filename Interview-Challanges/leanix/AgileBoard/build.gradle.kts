@@ -20,7 +20,7 @@ repositories {
     mavenCentral()
 }
 
-val kotestVersion = "5.9.0"
+val kotestVersion = "5.9.1"
 val kotestSpringExtensionVersion = "1.1.3"
 val ktorVersion = "2.3.11"
 val mockkVersion = "1.12.0"
