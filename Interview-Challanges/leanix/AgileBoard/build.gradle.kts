@@ -20,12 +20,40 @@ repositories {
     mavenCentral()
 }
 
+val kotestVersion = "5.9.0"
+val kotestSpringExtensionVersion = "1.1.3"
+val ktorVersion = "2.3.11"
+val mockkVersion = "1.12.0"
+val postgresVersion = "42.7.3"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // H2
+    runtimeOnly("com.h2database:h2")
+
+    // Postgres
+    runtimeOnly("org.postgresql:postgresql:$postgresVersion")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+    // Spring Boot Test
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // Kotest
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringExtensionVersion")
+
+    // Mockk
+    testImplementation("io.mockk:mockk:$mockkVersion")
+
+    // JUnit Platform Launcher
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
