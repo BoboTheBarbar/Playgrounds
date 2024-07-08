@@ -1,7 +1,7 @@
 # ToDo Service User Stories
 
 ## Board Management
-- [ ] **User Story 1:** As a user, I want to retrieve a list of all boards, so that I can view all the boards I have created.
+- [x] **User Story 1:** As a user, I want to retrieve a list of all boards, so that I can view all the boards I have created.
     - **Endpoint:** `GET /boards`
     - **Acceptance Criteria:**
         - The endpoint returns a list of all boards.
