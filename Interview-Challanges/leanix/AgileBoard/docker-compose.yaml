@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  agileboard:
+    image: agileboard
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mydatabase
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypassword
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
