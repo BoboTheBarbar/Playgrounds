@@ -1,9 +1,7 @@
 package de.leanix.agileboard.application
 
 import Board
-import de.leanix.agileboard.adapter.web.dto.BoardWebResponseDto
-import de.leanix.agileboard.adapter.web.dto.CreateBoardWebRequestDTO
-import de.leanix.agileboard.adapter.web.dto.toBoard
+import de.leanix.agileboard.adapter.web.dto.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -45,5 +43,12 @@ class BoardController(private val boardService: BoardService) {
             return ResponseEntity.notFound().build()
         }
         return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/{id}/tasks")
+    fun addTaskToBoard(@PathVariable id: UUID, @RequestBody createTaskRequestDto: CreateTaskWebRequestDTO): ResponseEntity<TaskWebResponseDTO> {
+        val addedTask = boardService.addTaskToBoard(createTaskRequestDto.toTask(), id)
+        val taskWebResponseDto = TaskWebResponseDTO(addedTask)
+        return ResponseEntity(taskWebResponseDto, HttpStatus.CREATED)
     }
 }

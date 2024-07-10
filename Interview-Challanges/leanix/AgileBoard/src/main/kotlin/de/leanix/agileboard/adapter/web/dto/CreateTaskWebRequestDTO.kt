@@ -7,3 +7,11 @@ data class CreateTaskWebRequestDTO(
     val description: String?,
     val userId: UUID
 )
+
+fun CreateTaskWebRequestDTO.toTask() = Board.Task(
+    UUID.randomUUID(),
+    name,
+    description,
+    userId,
+    Board.Status.CREATED
+)

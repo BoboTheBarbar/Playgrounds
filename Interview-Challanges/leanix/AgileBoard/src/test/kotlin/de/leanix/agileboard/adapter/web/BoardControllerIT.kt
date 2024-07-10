@@ -3,6 +3,8 @@ package de.leanix.agileboard.adapter.web
 import de.leanix.agileboard.BehaviorSpecIT
 import de.leanix.agileboard.adapter.web.dto.BoardWebResponseDto
 import de.leanix.agileboard.adapter.web.dto.CreateBoardWebRequestDTO
+import de.leanix.agileboard.adapter.web.dto.CreateTaskWebRequestDTO
+import de.leanix.agileboard.adapter.web.dto.TaskWebResponseDTO
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.http.HttpEntity
@@ -49,7 +51,7 @@ class BoardControllerIT() : BehaviorSpecIT() {
 
         Context("It is possible to query a single board") {
             Given("A board exists in the system") {
-                val createdBoard = createBoard()
+                val createdBoard = addBoard()
 
                 When("I request the board at /boards/{id}") {
                     val result = getBoardRequestById<BoardWebResponseDto>(createdBoard.id)
@@ -75,7 +77,7 @@ class BoardControllerIT() : BehaviorSpecIT() {
 
         Context("It is possible to delete a specific board") {
             Given("A board exists in the system") {
-                val createdBoard = createBoard()
+                val createdBoard = addBoard()
 
                 When("I delete the board at /boards/{id}") {
                     val result = restClient.exchange<Unit>(
@@ -97,6 +99,27 @@ class BoardControllerIT() : BehaviorSpecIT() {
                 }
             }
         }
+
+        Context("It is possible to add a Task to a Board") {
+            Given("A board exists in the system") {
+                val createdBoard = addBoard()
+
+                val taskWebRequestDTO = CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
+
+                When("I add a task to the board at /boards/{id}/tasks") {
+                    val result = restClient.exchange<TaskWebResponseDTO>(
+                        "$baseUrl/boards/${createdBoard.id}/tasks",
+                        HttpMethod.POST,
+                        HttpEntity(taskWebRequestDTO)
+                    )
+
+                    Then("it should return CREATED and the stored task") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(201)
+                        result.body?.name shouldBe taskWebRequestDTO.name
+                    }
+                }
+            }
+        }
     }
 
     private inline fun <reified T> getBoardRequestById(fakeBoardId: UUID?): ResponseEntity<T> {
@@ -109,7 +132,7 @@ class BoardControllerIT() : BehaviorSpecIT() {
         return result
     }
 
-    private fun createBoard(): BoardWebResponseDto {
+    private fun addBoard(): BoardWebResponseDto {
         val boardWebRequestDto = CreateBoardWebRequestDTO("New Board")
         val createdBoard =
             postBoardCreationRequest(boardWebRequestDto).body ?: throw IllegalStateException("Board creation failed")
