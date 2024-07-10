@@ -28,14 +28,22 @@ class BoardController(private val boardService: BoardService) {
 
     @GetMapping("/{id}")
     fun getBoard(@PathVariable id: UUID): ResponseEntity<BoardWebResponseDto> {
-        val board = boardService.getBoard(id)
-        val boardWebResponseDto = BoardWebResponseDto(board)
-        return ResponseEntity.ok(boardWebResponseDto)
+        try {
+            val board = boardService.getBoard(id)
+            val boardWebResponseDto = BoardWebResponseDto(board)
+            return ResponseEntity.ok(boardWebResponseDto)
+        } catch (e: NoSuchElementException) {
+            return ResponseEntity.notFound().build()
+        }
     }
 
     @DeleteMapping("/{id}")
     fun deleteBoard(@PathVariable id: UUID): ResponseEntity<Unit> {
-        boardService.deleteBoard(id)
+        try {
+            boardService.deleteBoard(id)
+        } catch (e: NoSuchElementException) {
+            return ResponseEntity.notFound().build()
+        }
         return ResponseEntity.noContent().build()
     }
 }

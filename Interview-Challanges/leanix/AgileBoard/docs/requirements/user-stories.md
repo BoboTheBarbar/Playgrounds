@@ -14,13 +14,13 @@
         - A new board is created with a unique `id`.
         - The response includes the `id`, `name`, and `description` of the newly created board.
 
-- [ ] **User Story 3:** As a user, I want to retrieve a specific board along with its tasks, so that I can view all tasks associated with the board.
+- [x] **User Story 3:** As a user, I want to retrieve a specific board along with its tasks, so that I can view all tasks associated with the board.
     - **Endpoint:** `GET /boards/{id}`
     - **Acceptance Criteria:**
         - The endpoint returns the board details including all associated tasks.
         - Task details are enriched with user information retrieved from the Centralized User Service.
 
-- [ ] **User Story 4:** As a user, I want to delete a board, so that I can remove boards that are no longer needed.
+- [x] **User Story 4:** As a user, I want to delete a board, so that I can remove boards that are no longer needed.
     - **Endpoint:** `DELETE /boards/{id}`
     - **Acceptance Criteria:**
         - The specified board is deleted.

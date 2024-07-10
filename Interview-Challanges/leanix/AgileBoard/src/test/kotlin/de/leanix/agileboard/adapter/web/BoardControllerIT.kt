@@ -84,15 +84,16 @@ class BoardControllerIT() : BehaviorSpecIT() {
 
                     }
 
-//                    And("the board should no longer exist") { // TODO: add simple Exception handler
-//                        val result = restClient.exchange(
-//                            "$baseUrl/boards/${createdBoard.id}",
-//                            HttpMethod.GET,
-//                            null,
-//                            BoardWebResponseDto::class.java
-//                        )
-//                        result.statusCode shouldBe HttpStatusCode.valueOf(404)
-//                    }
+                    And("the board should no longer exist") {
+                        val responseEntity = restClient.exchange(
+                            "$baseUrl/boards/${createdBoard.id}",
+                            HttpMethod.GET,
+                            null,
+                            String::class.java
+                        )
+
+                        responseEntity.statusCode shouldBe HttpStatusCode.valueOf(404)
+                    }
                 }
             }
         }
