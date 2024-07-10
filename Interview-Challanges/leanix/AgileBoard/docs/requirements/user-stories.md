@@ -83,3 +83,4 @@
 - [ ] add add openapi generator
 - [ ] create helm chart
 - [ ] gracefull message for tasks with identical ids
+- [ ] remove unnecessary dto status
