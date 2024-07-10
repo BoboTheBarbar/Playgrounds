@@ -1,10 +1,12 @@
 package de.leanix.agileboard.application
 
 import Board
+import de.leanix.agileboard.adapter.web.dto.CreateBoardWebRequestDTO
+import de.leanix.agileboard.adapter.web.dto.BoardWebResponseDto
+import de.leanix.agileboard.adapter.web.dto.toBoard
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/boards")
@@ -14,5 +16,12 @@ class BoardController(private val boardService: BoardService) {
     fun getAllBoards(): ResponseEntity<List<Board>> {
         val boards = boardService.getAllBoards()
         return ResponseEntity.ok(boards)
+    }
+
+    @PostMapping
+    fun createBoard(@RequestBody createBoardWebRequestDTO: CreateBoardWebRequestDTO): ResponseEntity<BoardWebResponseDto> {
+        val board = boardService.addBoard(createBoardWebRequestDTO.toBoard())
+        val boardWebResponseDto = BoardWebResponseDto(board)
+        return ResponseEntity(boardWebResponseDto, HttpStatus.CREATED)
     }
 }

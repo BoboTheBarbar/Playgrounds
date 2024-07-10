@@ -1,29 +1,49 @@
 package de.leanix.agileboard.adapter.web
 
-import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.extensions.spring.SpringExtension
+import de.leanix.agileboard.BehaviorSpecIT
+import de.leanix.agileboard.adapter.web.dto.BoardWebResponseDto
+import de.leanix.agileboard.adapter.web.dto.CreateBoardWebRequestDTO
 import io.kotest.matchers.shouldBe
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatusCode
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class BoardControllerIT(@Autowired val mockMvc: MockMvc) : BehaviorSpec({
 
-    extension(SpringExtension)
+class BoardControllerIT() : BehaviorSpecIT() {
+    init {
+        Context("It is possible to query all boards") {
+            Given("the server is up") {
+                When("GET request is made to /boards") {
+                    val result = restClient.exchange("$baseUrl/boards",
+                        HttpMethod.GET,
+                        null,
+                        List::class.java)
 
-    Given("the server is up") {
-        When("GET request is made to /boards") {
-            val result = mockMvc.perform(get("/boards"))
-                .andReturn().response
+                    Then("it should return 200 OK with an empty array") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(200)
+                        result.body?.size shouldBe 0
+                    }
+                }
+            }
+        }
 
-            Then("it should return 200 OK with an empty array") {
-                result.status shouldBe 200
-                result.contentAsString shouldBe "[]"
+        Context("It is possible to create a board") {
+            Given("A request to create a board") {
+                val boardWebRequestDto = CreateBoardWebRequestDTO("New Board")
+//                val jsonBoard = Json.encodeToString(CreateBoardWebRequestDTO.serializer(), boardWebRequestDto)
+
+                When("POST request is made to /boards") {
+                    val result = restClient.exchange("$baseUrl/boards",
+                        HttpMethod.POST,
+                        HttpEntity(boardWebRequestDto),
+                        BoardWebResponseDto::class.java)
+
+                    Then("it should return 200 OK and return the created board") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(201)
+                        result.body?.name shouldBe boardWebRequestDto.name
+                    }
+                }
             }
         }
     }
-})
+}

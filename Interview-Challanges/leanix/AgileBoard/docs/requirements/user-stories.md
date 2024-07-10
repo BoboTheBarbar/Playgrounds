@@ -63,10 +63,11 @@
         - The response confirms the successful handling of the webhook.
 
 ## Additional Considerations
-- [ ] **User Story 10:** As a developer, I want to containerize the ToDo Service using Docker, so that it can be easily deployed and run in various environments.
+- [x] **User Story 10:** As a developer, I want to containerize the ToDo Service using Docker, so that it can be easily deployed and run in various environments.
     - **Acceptance Criteria:**
         - A Dockerfile is created to build the ToDo Service container.
-        - The service runs successfully inside the Docker container.
+        - The Docker container is published to a container registry.
+        - A `docker-compose.yml` file is provided for running the service locally.
 
 - [ ] **User Story 11:** As a developer, I want to include automated tests, CI/CD pipelines, and documentation, so that the service is reliable, maintainable, and well-documented.
     - **Acceptance Criteria:**

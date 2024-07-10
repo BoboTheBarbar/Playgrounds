@@ -1,7 +1,8 @@
 package de.leanix.agileboard.application.persistence
 
-import de.leanix.agileboard.adapter.persistence.dto.BoardDbDto
-import org.springframework.data.repository.CrudRepository
-import java.util.UUID
+import Board
 
-interface BoardRepository : CrudRepository<BoardDbDto, UUID>
+interface BoardRepository {
+    fun findAllBoards(): List<Board>
+    fun saveBoard(board: Board) : Board
+}
