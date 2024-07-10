@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.24"
 }
 
-group = "de.leanix"
+group = "com.leanix"
 version = "0.0.1-SNAPSHOT"
 
 configurations {

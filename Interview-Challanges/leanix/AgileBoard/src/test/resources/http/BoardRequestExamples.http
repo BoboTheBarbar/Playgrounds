@@ -1,0 +1,13 @@
+### Get All Boards
+GET http://localhost:8081/boards
+Accept: application/json
+
+### Create New Board
+POST http://localhost:8081/boards
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Example Board Name",
+  "description": "Example Board Description"
+}
