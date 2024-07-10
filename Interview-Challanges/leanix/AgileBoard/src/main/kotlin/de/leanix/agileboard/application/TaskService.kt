@@ -16,15 +16,15 @@ class TaskService(private val boardRepository: BoardRepository) {
         return updatedBoard.tasks.first { it.id == task.id }
     }
 
-    fun updateTaskPartially(taskId: UUID, updateTaskPartialDTO: UpdateTaskPartialDTO): Board.Task {
+    fun updateTaskPartially(taskId: UUID, taskPatchDTO: TaskPatchDTO): Board.Task {
         val matchingBoard = findMatchingBoard(taskId)
 
         val task = matchingBoard.tasks.first { it.id == taskId }
         val updatedTask = task.copy(
-            name = updateTaskPartialDTO.name ?: task.name,
-            description = updateTaskPartialDTO.description ?: task.description,
-            status = updateTaskPartialDTO.status?.let { Board.Status.valueOf(it) } ?: task.status,
-            user = updateTaskPartialDTO.userId ?: task.user
+            name = taskPatchDTO.name ?: task.name,
+            description = taskPatchDTO.description ?: task.description,
+            status = taskPatchDTO.status?.let { Board.Status.valueOf(it) } ?: task.status,
+            user = taskPatchDTO.userId ?: task.user
         )
 
         val updatedBoard = matchingBoard.copy(tasks = matchingBoard.tasks.map { if (it.id == taskId) updatedTask else it })

@@ -58,14 +58,14 @@ class TaskServiceTest : BehaviorSpec({
             )
 
             When("the service is told to patch a Task partially") {
-                val updateTaskPartialDTO =
-                    UpdateTaskPartialDTO(
+                val taskPatchDTO =
+                    TaskPatchDTO(
                         name = null,
                         description = updatedTask.description,
                         status = updatedTask.status?.name,
                         userId = updatedTask.user
                     )
-                val taskResponse = boardService.updateTaskPartially(updatedTask.id, updateTaskPartialDTO)
+                val taskResponse = boardService.updateTaskPartially(updatedTask.id, taskPatchDTO)
 
                 Then("it should only update the fields that are not null in the DTO") {
                     verify { boardRepository.saveBoard(any()) }

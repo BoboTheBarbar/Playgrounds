@@ -4,7 +4,7 @@ import de.leanix.agileboard.adapter.web.dto.TaskWebResponseDTO
 import de.leanix.agileboard.adapter.web.dto.UpdateTaskWebRequestDTO
 import de.leanix.agileboard.adapter.web.dto.toTask
 import de.leanix.agileboard.application.TaskService
-import de.leanix.agileboard.application.UpdateTaskPartialDTO
+import de.leanix.agileboard.application.TaskPatchDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,9 +27,9 @@ class TaskController(private val taskService: TaskService) {
     }
 
     @PatchMapping("/{id}")
-    fun updateTaskPartially(@PathVariable id: UUID, @RequestBody updateTaskPartialDTO: UpdateTaskPartialDTO): ResponseEntity<TaskWebResponseDTO> {
+    fun updateTaskPartially(@PathVariable id: UUID, @RequestBody taskPatchDTO: TaskPatchDTO): ResponseEntity<TaskWebResponseDTO> {
         return try {
-            val updatedTask = taskService.updateTaskPartially(id, updateTaskPartialDTO)
+            val updatedTask = taskService.updateTaskPartially(id, taskPatchDTO)
             ResponseEntity.ok(TaskWebResponseDTO(updatedTask))
         } catch (e: NoSuchElementException) {
             ResponseEntity.notFound().build()
