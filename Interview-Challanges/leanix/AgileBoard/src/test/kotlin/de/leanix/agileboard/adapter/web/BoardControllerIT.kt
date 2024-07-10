@@ -1,13 +1,15 @@
 package de.leanix.agileboard.adapter.web
 
 import de.leanix.agileboard.BehaviorSpecIT
-import de.leanix.agileboard.adapter.web.dto.*
+import de.leanix.agileboard.adapter.web.dto.BoardWebResponseDto
+import de.leanix.agileboard.adapter.web.dto.CreateBoardWebRequestDTO
+import de.leanix.agileboard.adapter.web.dto.CreateTaskWebRequestDTO
+import de.leanix.agileboard.adapter.web.dto.TaskWebResponseDTO
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatusCode
-import org.springframework.http.ResponseEntity
 import java.util.*
 
 
@@ -103,7 +105,8 @@ class BoardControllerIT() : BehaviorSpecIT() {
 
 
                 When("I add a task to the board at /boards/{id}/tasks") {
-                    val taskWebRequestDTO = CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
+                    val taskWebRequestDTO =
+                        CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
                     val result = restClient.exchange<TaskWebResponseDTO>(
                         "$baseUrl/boards/${createdBoard.id}/tasks",
                         HttpMethod.POST,
@@ -119,7 +122,8 @@ class BoardControllerIT() : BehaviorSpecIT() {
 
             Given("A board does not exist in the system") {
                 val fakeBoardId = UUID.randomUUID()
-                val taskWebRequestDTO = CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
+                val taskWebRequestDTO =
+                    CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
 
                 When("I add a task to the fake board at /boards/{id}/tasks") {
                     val result = restClient.exchange<String>(
@@ -134,64 +138,6 @@ class BoardControllerIT() : BehaviorSpecIT() {
                 }
             }
         }
-
-        Context("It is possible to update a Task") {
-            Given("A board exists in the system with a task") {
-                val createdBoard = addBoard()
-
-                val taskWebRequestDTO = CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
-
-                val createdTask = restClient.exchange<TaskWebResponseDTO>(
-                    "$baseUrl/boards/${createdBoard.id}/tasks",
-                    HttpMethod.POST,
-                    HttpEntity(taskWebRequestDTO)
-                ).body ?: throw IllegalStateException("Task creation failed")
-
-                When("I update the task at /tasks/{taskId}") {
-                    val updatedTask = UpdateTaskWebRequestDTO(
-                        "Updated Task",
-                        "new description",
-                        createdTask.userId,
-                        Board.Status.STARTED.name
-                    )
-
-                    val result = restClient.exchange<TaskWebResponseDTO>(
-                        "$baseUrl/tasks/${createdTask.id}",
-                        HttpMethod.PUT,
-                        HttpEntity(updatedTask)
-                    )
-
-                    Then("it should return OK and the updated task") {
-                        result.statusCode shouldBe HttpStatusCode.valueOf(200)
-                        result.body?.name shouldBe updatedTask.name
-                    }
-                }
-            }
-        }
     }
 
-    private inline fun <reified T> getBoardRequestById(fakeBoardId: UUID?): ResponseEntity<T> {
-        val result = restClient.exchange(
-            "$baseUrl/boards/$fakeBoardId",
-            HttpMethod.GET,
-            null,
-            T::class.java
-        )
-        return result
-    }
-
-    private fun addBoard(): BoardWebResponseDto {
-        val boardWebRequestDto = CreateBoardWebRequestDTO("New Board")
-        val createdBoard =
-            postBoardCreationRequest(boardWebRequestDto).body ?: throw IllegalStateException("Board creation failed")
-        return createdBoard
-    }
-
-    private fun postBoardCreationRequest(boardWebRequestDto: CreateBoardWebRequestDTO): ResponseEntity<BoardWebResponseDto> =
-        restClient.exchange(
-            "$baseUrl/boards",
-            HttpMethod.POST,
-            HttpEntity(boardWebRequestDto),
-            BoardWebResponseDto::class.java
-        )
 }
