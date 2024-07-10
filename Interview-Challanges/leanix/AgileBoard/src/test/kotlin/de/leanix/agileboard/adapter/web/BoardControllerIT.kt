@@ -4,6 +4,7 @@ import de.leanix.agileboard.BehaviorSpecIT
 import de.leanix.agileboard.adapter.web.dto.BoardWebResponseDto
 import de.leanix.agileboard.adapter.web.dto.CreateBoardWebRequestDTO
 import io.kotest.matchers.shouldBe
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatusCode
@@ -49,8 +50,7 @@ class BoardControllerIT() : BehaviorSpecIT() {
 
         Context("It is possible to query a single board") {
             Given("A board exists in the system") {
-                val boardWebRequestDto = CreateBoardWebRequestDTO("New Board")
-                val createdBoard = postBoardCreationRequest(boardWebRequestDto).body ?: throw IllegalStateException("Board creation failed")
+                val createdBoard = createBoard()
 
                 When("I request the board at /boards/{id}") {
                     val result = restClient.exchange(
@@ -67,6 +67,42 @@ class BoardControllerIT() : BehaviorSpecIT() {
                 }
             }
         }
+
+        Context("It is possible to delete a specific board") {
+            Given("A board exists in the system") {
+                val createdBoard = createBoard()
+
+                When("I delete the board at /boards/{id}") {
+                    val result = restClient.exchange<Unit>(
+                        "$baseUrl/boards/${createdBoard.id}",
+                        HttpMethod.DELETE,
+                        null
+                    )
+
+                    Then("it should return NO_CONTENT") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(204)
+
+                    }
+
+//                    And("the board should no longer exist") { // TODO: add simple Exception handler
+//                        val result = restClient.exchange(
+//                            "$baseUrl/boards/${createdBoard.id}",
+//                            HttpMethod.GET,
+//                            null,
+//                            BoardWebResponseDto::class.java
+//                        )
+//                        result.statusCode shouldBe HttpStatusCode.valueOf(404)
+//                    }
+                }
+            }
+        }
+    }
+
+    private fun createBoard(): BoardWebResponseDto {
+        val boardWebRequestDto = CreateBoardWebRequestDTO("New Board")
+        val createdBoard =
+            postBoardCreationRequest(boardWebRequestDto).body ?: throw IllegalStateException("Board creation failed")
+        return createdBoard
     }
 
     private fun postBoardCreationRequest(boardWebRequestDto: CreateBoardWebRequestDTO): ResponseEntity<BoardWebResponseDto> =

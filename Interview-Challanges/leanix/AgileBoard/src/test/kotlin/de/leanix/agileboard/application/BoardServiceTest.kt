@@ -87,6 +87,8 @@ class BoardServiceTest : BehaviorSpec({
             }
         }
     }
+
+    // TODO: Add test for non-existing board deletion and retrieval requests
 })
 
 private fun createBoard(): Board {

@@ -32,4 +32,10 @@ class BoardController(private val boardService: BoardService) {
         val boardWebResponseDto = BoardWebResponseDto(board)
         return ResponseEntity.ok(boardWebResponseDto)
     }
+
+    @DeleteMapping("/{id}")
+    fun deleteBoard(@PathVariable id: UUID): ResponseEntity<Unit> {
+        boardService.deleteBoard(id)
+        return ResponseEntity.noContent().build()
+    }
 }
