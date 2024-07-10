@@ -9,7 +9,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
-import java.util.UUID
+import java.util.*
 
 
 class BoardControllerIT() : BehaviorSpecIT() {
@@ -52,12 +52,7 @@ class BoardControllerIT() : BehaviorSpecIT() {
                 val createdBoard = createBoard()
 
                 When("I request the board at /boards/{id}") {
-                    val result = restClient.exchange(
-                        "$baseUrl/boards/${createdBoard.id}",
-                        HttpMethod.GET,
-                        null,
-                        BoardWebResponseDto::class.java
-                    )
+                    val result = getBoardRequestById<BoardWebResponseDto>(createdBoard.id)
 
                     Then("it should return OK and the stored board") {
                         result.statusCode shouldBe HttpStatusCode.valueOf(200)
@@ -69,12 +64,7 @@ class BoardControllerIT() : BehaviorSpecIT() {
             Given("A board does not exist in the system") {
                 val fakeBoardId = UUID.randomUUID()
                 When("I request the board at /boards/{id}") {
-                    val result = restClient.exchange(
-                        "$baseUrl/boards/$fakeBoardId",
-                        HttpMethod.GET,
-                        null,
-                        String::class.java
-                    )
+                    val result = getBoardRequestById<String>(fakeBoardId)
 
                     Then("it should return NOT_FOUND") {
                         result.statusCode shouldBe HttpStatusCode.valueOf(404)
@@ -100,18 +90,23 @@ class BoardControllerIT() : BehaviorSpecIT() {
                     }
 
                     And("the board should no longer exist") {
-                        val responseEntity = restClient.exchange(
-                            "$baseUrl/boards/${createdBoard.id}",
-                            HttpMethod.GET,
-                            null,
-                            String::class.java
-                        )
+                        val responseEntity = getBoardRequestById<String>(createdBoard.id)
 
                         responseEntity.statusCode shouldBe HttpStatusCode.valueOf(404)
                     }
                 }
             }
         }
+    }
+
+    private inline fun <reified T> getBoardRequestById(fakeBoardId: UUID?): ResponseEntity<T> {
+        val result = restClient.exchange(
+            "$baseUrl/boards/$fakeBoardId",
+            HttpMethod.GET,
+            null,
+            T::class.java
+        )
+        return result
     }
 
     private fun createBoard(): BoardWebResponseDto {
