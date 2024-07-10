@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
+import java.util.UUID
 
 
 class BoardControllerIT() : BehaviorSpecIT() {
@@ -44,8 +45,6 @@ class BoardControllerIT() : BehaviorSpecIT() {
                     }
                 }
             }
-
-            // TODO: add error cases
         }
 
         Context("It is possible to query a single board") {
@@ -63,6 +62,22 @@ class BoardControllerIT() : BehaviorSpecIT() {
                     Then("it should return OK and the stored board") {
                         result.statusCode shouldBe HttpStatusCode.valueOf(200)
                         result.body shouldBe createdBoard
+                    }
+                }
+            }
+
+            Given("A board does not exist in the system") {
+                val fakeBoardId = UUID.randomUUID()
+                When("I request the board at /boards/{id}") {
+                    val result = restClient.exchange(
+                        "$baseUrl/boards/$fakeBoardId",
+                        HttpMethod.GET,
+                        null,
+                        String::class.java
+                    )
+
+                    Then("it should return NOT_FOUND") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(404)
                     }
                 }
             }
