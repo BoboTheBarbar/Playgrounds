@@ -11,5 +11,6 @@ class BoardService (private val boardRepository: BoardRepository) {
     fun getAllBoards(): List<Board> = boardRepository.findAllBoards()
 
     fun addBoard(board: Board): Board = boardRepository.saveBoard(board)
+
     fun getBoard(id: UUID): Board = boardRepository.findBoardById(id)
 }

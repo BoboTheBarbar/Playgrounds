@@ -55,4 +55,19 @@ class BoardServiceTest : BehaviorSpec({
             }
         }
     }
+
+    Context("service should be able to return a single board") {
+        Given("a board exists") {
+            val board = Board(UUID.randomUUID(), "Board 1")
+            coEvery { boardRepository.findBoardById(board.id) } returns board
+
+            When("getBoard is called") {
+                val result = boardService.getBoard(board.id)
+
+                Then("it should return the board") {
+                    result shouldBe board
+                }
+            }
+        }
+    }
 })
