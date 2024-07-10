@@ -34,12 +34,13 @@
         - A new task is created with a unique `id` and status set to `CREATED`.
         - The response includes the `id`, `name`, `description`, `user`, and `status` of the newly created task.
 
-- [ ] **User Story 6:** As a user, I want to update an existing task, so that I can modify the details of a task.
+- [x] **User Story 6:** As a user, I want to update an existing task, so that I can modify the details of a task.
     - **Endpoint:** `PUT /tasks/{id}`
     - **Acceptance Criteria:**
         - The endpoint accepts updated task attributes.
         - The specified task is overwritten with the new details.
         - The response includes the updated task details.
+        - The task status can also be modified.
 
 - [ ] **User Story 7:** As a user, I want to partially update an existing task, so that I can modify specific attributes of a task.
     - **Endpoint:** `PATCH /tasks/{id}`
@@ -81,3 +82,4 @@
 - [ ] add ci
 - [ ] add add openapi generator
 - [ ] create helm chart
+- [ ] gracefull message for tasks with identical ids

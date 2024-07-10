@@ -95,7 +95,7 @@ class BoardServiceTest : BehaviorSpec({
             coEvery { boardRepository.findBoardById(originalBoard.id) } returns originalBoard
             coEvery { boardRepository.saveBoard(capture(savedBoardSlot)) } returns originalBoard.copy(tasks = originalBoard.tasks + newTask)
 
-            When("the service told to add a Task to the Board") {
+            When("the service is told to add a Task to the Board") {
                 val addedTask = boardService.addTaskToBoard(newTask, originalBoard.id)
 
                 Then("it should add the Task to the Board") {
@@ -106,9 +106,28 @@ class BoardServiceTest : BehaviorSpec({
             }
         }
     }
+
+    Context("service should be able to update a Task") {
+        Given("an board exists with a task and a task to update") {
+            val originalTask = Task(UUID.randomUUID(), "Task 1", user = UUID.randomUUID())
+            val boardWithTask = Board(UUID.randomUUID(), "Board 2", null, listOf(originalTask))
+            val updatedTask = originalTask.copy(name = "Task 2", description = "Task 2 Description")
+
+            val savedBoardSlot = slot<Board>()
+            coEvery { boardRepository.findAllBoards() } returns listOf(createBoard(), boardWithTask)
+            coEvery { boardRepository.saveBoard(capture(savedBoardSlot)) } returns boardWithTask.copy(tasks = listOf(updatedTask))
+
+            When("the service is told to update a Task") {
+                val taskResponse = boardService.updateTask(updatedTask)
+
+                Then("it should update the Task") {
+                    verify { boardRepository.saveBoard(any()) }
+                    savedBoardSlot.captured.tasks.size shouldBe boardWithTask.tasks.size
+                    taskResponse shouldBe updatedTask
+                }
+            }
+        }
+    }
 })
 
-private fun createBoard(): Board {
-    val board = Board(UUID.randomUUID(), "Board 1")
-    return board
-}
+private fun createBoard(): Board = Board(UUID.randomUUID(), "Board 1")
