@@ -28,6 +28,16 @@ class BoardRepositoryRDBMS(val boardDBCrudRepository: BoardDBCrudRepository, val
     override fun deleteBoardById(id: UUID) {
         boardDBCrudRepository.deleteById(id)
     }
+
+    override fun deleteTaskById(taskID: UUID) {
+        boardDBCrudRepository.findAll().forEach { boardDBDto ->
+            val updatedTasks = boardDBDto.tasks.filter { it.id != taskID }
+            if (updatedTasks.size < boardDBDto.tasks.size) {    // FIXME: use separate repository
+                boardDBCrudRepository.delete(boardDBDto)
+                boardDBCrudRepository.save(boardDBDto.copy(tasks = updatedTasks))
+            }
+        }
+    }
 }
 
 interface BoardDBCrudRepository : CrudRepository<BoardDBDto, UUID>

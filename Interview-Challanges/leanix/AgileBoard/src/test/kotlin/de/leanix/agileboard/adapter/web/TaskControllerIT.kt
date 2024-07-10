@@ -68,6 +68,23 @@ class TaskControllerIT() : BehaviorSpecIT() {
                 }
             }
         }
+
+        Context("It is possible to delete a Task") {
+            Given("A task on a board") {
+                val createdTask = createTask()
+
+                When("I delete the task at /tasks/{taskId}") {
+                    val result = restClient.exchange<Void>(
+                        "$baseUrl/tasks/${createdTask.id}",
+                        HttpMethod.DELETE
+                    )
+
+                    Then("it should return NO_CONTENT") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(204)
+                    }
+                }
+            }
+        }
     }
 
     private fun createTask(): TaskWebResponseDTO {

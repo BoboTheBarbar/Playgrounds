@@ -8,4 +8,6 @@ interface BoardRepository {
     fun saveBoard(board: Board) : Board
     fun findBoardById(id: UUID): Board
     fun deleteBoardById(id: UUID)
+
+    fun deleteTaskById(taskID: UUID)    // move
 }

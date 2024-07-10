@@ -11,3 +11,22 @@ Accept: application/json
   "name": "Surfboard",
   "description": "Used to navigate the internet"
 }
+
+### Add New Task to Board
+
+@boardId = a8f498c7-2e2d-42e8-8d92-121b03bb5941
+POST http://localhost:8081/boards/{{boardId}}/tasks
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Task-Force Unicorn",
+  "description": "Has only one corn",
+  "userId": "{{boardId}}"
+}
+
+### Delete Task from Board
+
+@taskId = 391b58ea-1db8-4e56-8b51-0c6b691a9a84
+DELETE http://localhost:8081/tasks/{{taskId}}
+Accept: application/json

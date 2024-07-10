@@ -33,6 +33,10 @@ class TaskService(private val boardRepository: BoardRepository) {
         return updatedBoard.tasks.first { it.id == taskId }
     }
 
+    fun deleteTaskById(taskID: UUID) {
+        boardRepository.deleteTaskById(taskID)
+    }
+
     private fun findMatchingBoard(taskId: UUID): Board {
         return boardRepository.findAllBoards().firstOrNull { board ->
             board.tasks.any { it.id == taskId }

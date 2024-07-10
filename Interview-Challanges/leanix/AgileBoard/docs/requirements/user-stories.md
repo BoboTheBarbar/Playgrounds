@@ -42,14 +42,14 @@
         - The response includes the updated task details.
         - The task status can also be modified.
 
-- [ ] **User Story 7:** As a user, I want to partially update an existing task, so that I can modify specific attributes of a task.
+- [x] **User Story 7:** As a user, I want to partially update an existing task, so that I can modify specific attributes of a task.
     - **Endpoint:** `PATCH /tasks/{id}`
     - **Acceptance Criteria:**
         - The endpoint accepts partial task attributes.
         - The specified task is updated with the new attributes.
         - The response includes the updated task details.
 
-- [ ] **User Story 8:** As a user, I want to delete a task, so that I can remove tasks that are no longer needed.
+- [/] **User Story 8:** As a user, I want to delete a task, so that I can remove tasks that are no longer needed.
     - **Endpoint:** `DELETE /tasks/{id}`
     - **Acceptance Criteria:**
         - The specified task is deleted.
@@ -78,9 +78,10 @@
 
 ## Polishing
 
-- [ ] configure json code generator to generate into source folder
+- [ ] configure json code generator output folder into source
 - [ ] add ci
-- [ ] add add openapi generator
+- [ ] add openapi generator
 - [ ] create helm chart
-- [ ] gracefull message for tasks with identical ids
+- [ ] gracefully notify about tasks with identical ids
 - [ ] remove unnecessary dto status
+- [ ] refactor delete task in wrong repository
