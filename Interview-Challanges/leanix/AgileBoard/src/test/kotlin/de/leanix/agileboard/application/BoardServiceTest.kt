@@ -6,7 +6,9 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
+import io.mockk.justRun
 import io.mockk.mockk
+import io.mockk.verify
 import java.util.*
 
 class BoardServiceTest : BehaviorSpec({
@@ -43,7 +45,7 @@ class BoardServiceTest : BehaviorSpec({
 
     Context("service should be able to create a new board") {
         Given("a board is created") {
-            val board = Board(UUID.randomUUID(), "Board 1")
+            val board = createBoard()
             coEvery { boardRepository.saveBoard(board) } returns board
 
             When("createBoard is called") {
@@ -58,7 +60,7 @@ class BoardServiceTest : BehaviorSpec({
 
     Context("service should be able to return a single board") {
         Given("a board exists") {
-            val board = Board(UUID.randomUUID(), "Board 1")
+            val board = createBoard()
             coEvery { boardRepository.findBoardById(board.id) } returns board
 
             When("getBoard is called") {
@@ -70,4 +72,24 @@ class BoardServiceTest : BehaviorSpec({
             }
         }
     }
+
+    Context("service should be able to delete a specific board") {
+        Given("a board exists") {
+            val board = createBoard()
+            justRun { boardRepository.deleteBoardById(board.id) }
+
+            When("deleteBoard is called") {
+                boardService.deleteBoard(board.id)
+
+                Then("it should delete the board") {
+                    verify { boardRepository.deleteBoardById(board.id) }
+                }
+            }
+        }
+    }
 })
+
+private fun createBoard(): Board {
+    val board = Board(UUID.randomUUID(), "Board 1")
+    return board
+}

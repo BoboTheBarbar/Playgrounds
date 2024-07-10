@@ -26,6 +26,10 @@ class BoardRepositoryImpl(val boardDBDtoRepository: BoardDBDtoRepository, val bo
         return boardDBAdapter.toBoard(dbDto)
     }
 
+    override fun deleteBoardById(id: UUID) {
+        boardDBDtoRepository.deleteById(id)
+    }
+
 }
 
 interface BoardDBDtoRepository : CrudRepository<BoardDBDto, UUID>

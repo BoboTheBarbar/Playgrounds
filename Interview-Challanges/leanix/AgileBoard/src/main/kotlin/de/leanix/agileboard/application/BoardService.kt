@@ -13,4 +13,6 @@ class BoardService (private val boardRepository: BoardRepository) {
     fun addBoard(board: Board): Board = boardRepository.saveBoard(board)
 
     fun getBoard(id: UUID): Board = boardRepository.findBoardById(id)
+
+    fun deleteBoard(id: UUID) = boardRepository.deleteBoardById(id)
 }

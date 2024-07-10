@@ -7,4 +7,5 @@ interface BoardRepository {
     fun findAllBoards(): List<Board>
     fun saveBoard(board: Board) : Board
     fun findBoardById(id: UUID): Board
+    fun deleteBoardById(id: UUID)
 }
