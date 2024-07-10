@@ -1,14 +1,12 @@
 package de.leanix.agileboard.application
 
 import Board
+import Board.Task
 import de.leanix.agileboard.application.persistence.BoardRepository
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
-import io.mockk.coEvery
-import io.mockk.justRun
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import java.util.*
 
 class BoardServiceTest : BehaviorSpec({
@@ -88,7 +86,26 @@ class BoardServiceTest : BehaviorSpec({
         }
     }
 
-    // TODO: Add test for non-existing board deletion and retrieval requests
+    Context("service should be able to add a Task to a Board") {
+        Given("an board exists without tasks and a task to add") {
+            val originalBoard = createBoard()
+            val newTask = Task(UUID.randomUUID(), "Task 1", user = UUID.randomUUID())
+
+            val savedBoardSlot = slot<Board>()
+            coEvery { boardRepository.findBoardById(originalBoard.id) } returns originalBoard
+            coEvery { boardRepository.saveBoard(capture(savedBoardSlot)) } returns originalBoard.copy(tasks = originalBoard.tasks + newTask)
+
+            When("the service told to add a Task to the Board") {
+                val addedTask = boardService.addTaskToBoard(newTask, originalBoard.id)
+
+                Then("it should add the Task to the Board") {
+                    verify { boardRepository.saveBoard(any()) }
+                    savedBoardSlot.captured.tasks.size shouldBe originalBoard.tasks.size + 1
+                    addedTask shouldBe newTask
+                }
+            }
+        }
+    }
 })
 
 private fun createBoard(): Board {

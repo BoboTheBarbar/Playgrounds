@@ -15,4 +15,11 @@ class BoardService (private val boardRepository: BoardRepository) {
     fun getBoard(id: UUID): Board = boardRepository.findBoardById(id)
 
     fun deleteBoard(id: UUID) = boardRepository.deleteBoardById(id)
+
+    fun addTaskToBoard(task: Board.Task, boardId: UUID) : Board.Task {
+        val board = boardRepository.findBoardById(boardId)
+        val updatedBoard = board.copy(tasks = board.tasks + task)
+        boardRepository.saveBoard(updatedBoard)
+        return updatedBoard.tasks.first { it.id == task.id}
+    }
 }

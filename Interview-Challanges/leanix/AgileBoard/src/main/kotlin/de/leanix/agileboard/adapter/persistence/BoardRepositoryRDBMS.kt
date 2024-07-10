@@ -28,7 +28,6 @@ class BoardRepositoryRDBMS(val boardDBCrudRepository: BoardDBCrudRepository, val
     override fun deleteBoardById(id: UUID) {
         boardDBCrudRepository.deleteById(id)
     }
-
 }
 
 interface BoardDBCrudRepository : CrudRepository<BoardDBDto, UUID>
