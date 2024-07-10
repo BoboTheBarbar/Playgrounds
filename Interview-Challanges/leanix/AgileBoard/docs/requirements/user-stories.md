@@ -75,3 +75,9 @@
         - CI/CD pipelines are set up for automated building, testing, and deployment.
         - Comprehensive documentation is provided for the service, including setup instructions, API documentation, and architectural details.
 
+## Polishing
+
+- [ ] configure json code generator to generate into source folder
+- [ ] add ci
+- [ ] add add openapi generator
+- [ ] create helm chart

@@ -9,27 +9,26 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class BoardRepositoryImpl(val boardDBDtoRepository: BoardDBDtoRepository, val boardDBAdapter: BoardDBAdapter) :
-    BoardRepository {
+class BoardRepositoryRDBMS(val boardDBCrudRepository: BoardDBCrudRepository, val boardDBAdapter: BoardDBAdapter) : BoardRepository {
     override fun findAllBoards(): List<Board> {
-        return boardDBDtoRepository.findAll().map { boardDBAdapter.toBoard(it) }
+        return boardDBCrudRepository.findAll().map { boardDBAdapter.toBoard(it) }
     }
 
     override fun saveBoard(board: Board): Board {
-        val boardDBDto = boardDBDtoRepository.save(boardDBAdapter.toBoardDBDto(board))
+        val boardDBDto = boardDBCrudRepository.save(boardDBAdapter.toBoardDBDto(board))
         return boardDBAdapter.toBoard(boardDBDto)
     }
 
     override fun findBoardById(id: UUID): Board {
-        val dbDto = boardDBDtoRepository.findById(id)
+        val dbDto = boardDBCrudRepository.findById(id)
             .orElseThrow { NoSuchElementException("Board with id $id not found") }
         return boardDBAdapter.toBoard(dbDto)
     }
 
     override fun deleteBoardById(id: UUID) {
-        boardDBDtoRepository.deleteById(id)
+        boardDBCrudRepository.deleteById(id)
     }
 
 }
 
-interface BoardDBDtoRepository : CrudRepository<BoardDBDto, UUID>
+interface BoardDBCrudRepository : CrudRepository<BoardDBDto, UUID>
