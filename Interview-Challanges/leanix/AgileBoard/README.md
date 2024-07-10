@@ -42,7 +42,3 @@ The plugin follows the principle of `convention over configuration`. The default
 ## Example requests
 
 Example requests can be found in the [requests](src/test/resources/http/BoardRequestExamples.http) folder.
-
-## API Documentation
-
-The API documentation is available at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
