@@ -9,14 +9,21 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class BoardRepositoryImpl(val boardDBDtoRepository: BoardDBDtoRepository, val boardDBAdapter: BoardDBAdapter) : BoardRepository {
+class BoardRepositoryImpl(val boardDBDtoRepository: BoardDBDtoRepository, val boardDBAdapter: BoardDBAdapter) :
+    BoardRepository {
     override fun findAllBoards(): List<Board> {
         return boardDBDtoRepository.findAll().map { boardDBAdapter.toBoard(it) }
     }
 
-    override fun saveBoard(board: Board) : Board {
+    override fun saveBoard(board: Board): Board {
         val boardDBDto = boardDBDtoRepository.save(boardDBAdapter.toBoardDBDto(board))
         return boardDBAdapter.toBoard(boardDBDto)
+    }
+
+    override fun findBoardById(id: UUID): Board {
+        val dbDto = boardDBDtoRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Board with id $id not found") }
+        return boardDBAdapter.toBoard(dbDto)
     }
 
 }

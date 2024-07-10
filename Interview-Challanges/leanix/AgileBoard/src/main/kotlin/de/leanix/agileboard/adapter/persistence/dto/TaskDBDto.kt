@@ -1,7 +1,7 @@
 package de.leanix.agileboard.adapter.persistence.dto
 
 import jakarta.persistence.*
-import java.util.UUID
+import java.util.*
 
 @Entity
 data class TaskDBDto(

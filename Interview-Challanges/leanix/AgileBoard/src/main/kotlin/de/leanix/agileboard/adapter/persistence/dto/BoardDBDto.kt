@@ -1,11 +1,7 @@
 package de.leanix.agileboard.adapter.persistence.dto
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.CascadeType
-import jakarta.persistence.FetchType
-import java.util.UUID
+import jakarta.persistence.*
+import java.util.*
 
 @Entity
 data class BoardDBDto(

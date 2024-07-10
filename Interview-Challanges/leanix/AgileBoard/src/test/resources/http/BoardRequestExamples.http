@@ -8,6 +8,6 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Example Board Name",
-  "description": "Example Board Description"
+  "name": "Surfboard",
+  "description": "Used to navigate the internet"
 }

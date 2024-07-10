@@ -7,7 +7,7 @@
         - The endpoint returns a list of all boards.
         - The response includes the `id`, `name`, and `description` of each board.
 
-- [ ] **User Story 2:** As a user, I want to create a new board, so that I can organize my tasks.
+- [x] **User Story 2:** As a user, I want to create a new board, so that I can organize my tasks.
     - **Endpoint:** `POST /boards`
     - **Acceptance Criteria:**
         - The endpoint accepts `name` and `description` as attributes.
