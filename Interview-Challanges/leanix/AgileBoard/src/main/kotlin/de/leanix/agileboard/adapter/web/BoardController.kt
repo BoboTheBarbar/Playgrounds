@@ -26,29 +26,33 @@ class BoardController(private val boardService: BoardService) {
 
     @GetMapping("/{id}")
     fun getBoard(@PathVariable id: UUID): ResponseEntity<BoardWebResponseDto> {
-        try {
+        return try {
             val board = boardService.getBoard(id)
             val boardWebResponseDto = BoardWebResponseDto(board)
-            return ResponseEntity.ok(boardWebResponseDto)
+            ResponseEntity.ok(boardWebResponseDto)
         } catch (e: NoSuchElementException) {
-            return ResponseEntity.notFound().build()
+            ResponseEntity.notFound().build()
         }
     }
 
     @DeleteMapping("/{id}")
     fun deleteBoard(@PathVariable id: UUID): ResponseEntity<Unit> {
-        try {
+        return try {
             boardService.deleteBoard(id)
+            ResponseEntity.noContent().build()
         } catch (e: NoSuchElementException) {
-            return ResponseEntity.notFound().build()
+            ResponseEntity.notFound().build()
         }
-        return ResponseEntity.noContent().build()
     }
 
     @PostMapping("/{id}/tasks")
     fun addTaskToBoard(@PathVariable id: UUID, @RequestBody createTaskRequestDto: CreateTaskWebRequestDTO): ResponseEntity<TaskWebResponseDTO> {
-        val addedTask = boardService.addTaskToBoard(createTaskRequestDto.toTask(), id)
-        val taskWebResponseDto = TaskWebResponseDTO(addedTask)
-        return ResponseEntity(taskWebResponseDto, HttpStatus.CREATED)
+        return try {
+            val addedTask = boardService.addTaskToBoard(createTaskRequestDto.toTask(), id)
+            val taskWebResponseDto = TaskWebResponseDTO(addedTask)
+            ResponseEntity(taskWebResponseDto, HttpStatus.CREATED)
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.badRequest().build()
+        }
     }
 }

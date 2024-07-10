@@ -119,6 +119,23 @@ class BoardControllerIT() : BehaviorSpecIT() {
                     }
                 }
             }
+
+            Given("A board does not exist in the system") {
+                val fakeBoardId = UUID.randomUUID()
+                val taskWebRequestDTO = CreateTaskWebRequestDTO(name = "New Task", description = null, userId = UUID.randomUUID())
+
+                When("I add a task to the fake board at /boards/{id}/tasks") {
+                    val result = restClient.exchange<String>(
+                        "$baseUrl/boards/$fakeBoardId/tasks",
+                        HttpMethod.POST,
+                        HttpEntity(taskWebRequestDTO)
+                    )
+
+                    Then("it should return NOT_FOUND") {
+                        result.statusCode shouldBe HttpStatusCode.valueOf(400)
+                    }
+                }
+            }
         }
     }
 

@@ -27,7 +27,7 @@
         - The response confirms the deletion of the board.
 
 ## Task Management
-- [ ] **User Story 5:** As a user, I want to add a task to a board, so that I can manage specific tasks within the board.
+- [x] **User Story 5:** As a user, I want to add a task to a board, so that I can manage specific tasks within the board.
     - **Endpoint:** `POST /boards/{id}/tasks`
     - **Acceptance Criteria:**
         - The endpoint accepts `name`, `description`, and `user` attributes.
