@@ -2,6 +2,7 @@ package de.leanix.agileboard.adapter.web
 
 import Board
 import de.leanix.agileboard.adapter.web.dto.*
+import de.leanix.agileboard.adapter.web.userservice.getUserData
 import de.leanix.agileboard.application.BoardService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,6 +12,8 @@ import java.util.*
 @RestController
 @RequestMapping("/boards")
 class BoardController(private val boardService: BoardService) {
+
+
 
     @GetMapping
     fun getAllBoards(): ResponseEntity<List<Board>> {
@@ -29,6 +32,11 @@ class BoardController(private val boardService: BoardService) {
     fun getBoard(@PathVariable id: UUID): ResponseEntity<BoardWebResponseDto> {
         val board = boardService.getBoard(id)
         val boardWebResponseDto = BoardWebResponseDto(board)
+
+        boardWebResponseDto.tasks.forEach {
+            it.userData = getUserData(userId = it.userId)
+        }
+
         return ResponseEntity.ok(boardWebResponseDto)
     }
 

@@ -14,7 +14,7 @@ Accept: application/json
 
 ### Add New Task to Board
 
-@boardId = a8f498c7-2e2d-42e8-8d92-121b03bb5941
+@boardId = 9d820a52-6ddc-4933-a6d2-ceb4aae3f49a
 POST http://localhost:8081/boards/{{boardId}}/tasks
 Content-Type: application/json
 Accept: application/json
@@ -27,6 +27,6 @@ Accept: application/json
 
 ### Delete Task from Board
 
-@taskId = 391b58ea-1db8-4e56-8b51-0c6b691a9a84
+@taskId = 4e1ca5b6-ff89-4899-b33a-ece4877a9d64
 DELETE http://localhost:8081/tasks/{{taskId}}
 Accept: application/json

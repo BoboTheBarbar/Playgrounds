@@ -56,7 +56,7 @@
         - The response confirms the deletion of the task.
 
 ## User Management
-- [ ] **User Story 9:** As a system, I want to remove all tasks related to a user when the user is deleted from the Centralized User Service, so that orphan tasks are automatically cleaned up.
+- [x] **User Story 9:** As a system, I want to remove all tasks related to a user when the user is deleted from the Centralized User Service, so that orphan tasks are automatically cleaned up.
     - **Webhook Endpoint:** `POST /webhooks/user-deleted`
     - **Acceptance Criteria:**
         - The endpoint receives a payload with the `user` id.

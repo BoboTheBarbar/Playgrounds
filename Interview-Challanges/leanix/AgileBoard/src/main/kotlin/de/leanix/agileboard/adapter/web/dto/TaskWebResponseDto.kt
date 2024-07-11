@@ -7,7 +7,8 @@ data class TaskWebResponseDTO(
     val name: String,
     val description: String?,
     val userId: UUID,
-    val status: String?
+    val status: String?,
+    var userData: String? = null
 ) {
     constructor(task: Board.Task) : this(task.id, task.name, task.description, task.user, task.status?.name)
 }

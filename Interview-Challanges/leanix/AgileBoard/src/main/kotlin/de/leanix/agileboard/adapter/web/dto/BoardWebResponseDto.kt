@@ -7,6 +7,7 @@ data class BoardWebResponseDto(
     val id: UUID,
     val name: String,
     val description: String? = null,
+    val tasks: List<TaskWebResponseDTO> = mutableListOf()
 ) {
-    constructor(board: Board) : this(board.id, board.name, board.description)
+    constructor(board: Board) : this(board.id, board.name, board.description, board.tasks.map { TaskWebResponseDTO(it) })
 }
