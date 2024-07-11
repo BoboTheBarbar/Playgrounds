@@ -1,11 +1,12 @@
-package de.leanix.agileboard.application
+package de.leanix.agileboard.adapter.web
 
 import Board
 import de.leanix.agileboard.adapter.web.dto.*
+import de.leanix.agileboard.application.BoardService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("/boards")
@@ -26,33 +27,24 @@ class BoardController(private val boardService: BoardService) {
 
     @GetMapping("/{id}")
     fun getBoard(@PathVariable id: UUID): ResponseEntity<BoardWebResponseDto> {
-        return try {
-            val board = boardService.getBoard(id)
-            val boardWebResponseDto = BoardWebResponseDto(board)
-            ResponseEntity.ok(boardWebResponseDto)
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.notFound().build()
-        }
+        val board = boardService.getBoard(id)
+        val boardWebResponseDto = BoardWebResponseDto(board)
+        return ResponseEntity.ok(boardWebResponseDto)
     }
 
     @DeleteMapping("/{id}")
     fun deleteBoard(@PathVariable id: UUID): ResponseEntity<Unit> {
-        return try {
-            boardService.deleteBoard(id)
-            ResponseEntity.noContent().build()
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.notFound().build()
-        }
+        boardService.deleteBoard(id)
+        return ResponseEntity.noContent().build()
     }
 
     @PostMapping("/{id}/tasks")
-    fun addTaskToBoard(@PathVariable id: UUID, @RequestBody createTaskRequestDto: CreateTaskWebRequestDTO): ResponseEntity<TaskWebResponseDTO> {
-        return try {
-            val addedTask = boardService.addTaskToBoard(createTaskRequestDto.toTask(), id)
-            val taskWebResponseDto = TaskWebResponseDTO(addedTask)
-            ResponseEntity(taskWebResponseDto, HttpStatus.CREATED)
-        } catch (e: IllegalArgumentException) {
-            ResponseEntity.badRequest().build()
-        }
+    fun addTaskToBoard(
+        @PathVariable id: UUID,
+        @RequestBody createTaskRequestDto: CreateTaskWebRequestDTO
+    ): ResponseEntity<TaskWebResponseDTO> {
+        val addedTask = boardService.addTaskToBoard(createTaskRequestDto.toTask(), id)
+        val taskWebResponseDto = TaskWebResponseDTO(addedTask)
+        return ResponseEntity(taskWebResponseDto, HttpStatus.CREATED)
     }
 }
